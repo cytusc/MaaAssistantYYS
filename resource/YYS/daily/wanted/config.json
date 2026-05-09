@@ -3,37 +3,49 @@
     "task_name": "悬赏封印",
     "priority": 60,
     "enabled": true,
-    "steps": [
-        {
-            "name": "打开任务",
-            "action": "click",
-            "target": "I_WANTED"
-        },
-        {
-            "name": "识别任务",
-            "action": "ocr",
-            "target": "O_TASK",
-            "mode": "full"
-        },
-        {
-            "name": "点击任务",
-            "action": "click",
-            "target": "I_TASK_TARGET"
-        }
-    ],
     "template": [
         {
             "id": "I_WANTED",
             "file": "I_WANTED.png",
-            "roi": [0, 0, 1280, 720],
-            "threshold": 0.8
+            "roi": [0, 600, 300, 120],
+            "threshold": 0.8,
+            "desc": "悬赏封印入口"
+        },
+        {
+            "id": "I_WANTED_TASK",
+            "file": "I_WANTED_TASK.png",
+            "roi": [100, 100, 1000, 500],
+            "threshold": 0.7,
+            "desc": "悬赏任务条目"
+        },
+        {
+            "id": "I_WANTED_ACCEPT",
+            "file": "I_WANTED_ACCEPT.png",
+            "roi": [900, 200, 300, 400],
+            "threshold": 0.8,
+            "desc": "接受/前往按钮"
+        },
+        {
+            "id": "I_WANTED_COMPLETE",
+            "file": "I_WANTED_COMPLETE.png",
+            "roi": [300, 200, 700, 400],
+            "threshold": 0.8,
+            "desc": "悬赏完成标识"
+        },
+        {
+            "id": "I_WANTED_REWARD",
+            "file": "I_WANTED_REWARD.png",
+            "roi": [300, 200, 700, 400],
+            "threshold": 0.8,
+            "desc": "悬赏奖励弹窗"
         }
     ],
     "ocr": [
         {
-            "id": "O_TASK",
-            "roi": [0, 0, 1280, 720],
-            "mode": "full"
+            "id": "O_WANTED_TASK",
+            "roi": [150, 150, 600, 400],
+            "mode": "full",
+            "description": "识别悬赏任务目标怪物名称"
         }
     ]
 }

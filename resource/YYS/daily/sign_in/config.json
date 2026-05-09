@@ -1,0 +1,30 @@
+{
+    "task_id": "sign_in",
+    "task_name": "每日签到",
+    "priority": 80,
+    "enabled": true,
+    "template": [
+        {
+            "id": "I_SIGN_IN",
+            "file": "I_SIGN_IN.png",
+            "roi": [0, 0, 1280, 720],
+            "threshold": 0.8,
+            "desc": "签到入口/按钮"
+        },
+        {
+            "id": "I_SIGN_IN_REWARD",
+            "file": "I_SIGN_IN_REWARD.png",
+            "roi": [300, 200, 700, 400],
+            "threshold": 0.8,
+            "desc": "签到奖励弹窗"
+        },
+        {
+            "id": "I_SIGN_IN_CLOSE",
+            "file": "I_SIGN_IN_CLOSE.png",
+            "roi": [900, 50, 300, 150],
+            "threshold": 0.8,
+            "desc": "关闭签到页面"
+        }
+    ],
+    "ocr": []
+}
