@@ -1,0 +1,30 @@
+{
+    "task_id": "true_snake",
+    "task_name": "真蛇",
+    "priority": 45,
+    "enabled": true,
+    "template": [
+        {
+            "id": "I_TRUE_SNAKE_ENTER",
+            "file": "I_TRUE_SNAKE_ENTER.png",
+            "roi": [0, 0, 1280, 720],
+            "threshold": 0.8,
+            "desc": "入口"
+        },
+        {
+            "id": "I_TRUE_SNAKE_BATTLE",
+            "file": "I_TRUE_SNAKE_BATTLE.png",
+            "roi": [800, 500, 400, 200],
+            "threshold": 0.8,
+            "desc": "挑战按钮"
+        },
+        {
+            "id": "I_TRUE_SNAKE_REWARD",
+            "file": "I_TRUE_SNAKE_REWARD.png",
+            "roi": [300, 200, 700, 400],
+            "threshold": 0.8,
+            "desc": "奖励弹窗"
+        }
+    ],
+    "ocr": []
+}

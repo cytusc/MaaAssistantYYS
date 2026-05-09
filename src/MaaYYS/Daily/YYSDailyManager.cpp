@@ -1,5 +1,17 @@
 #include "YYSDailyManager.h"
 #include "Tasks/YYSOrochiTask.h"
+#include "Tasks/YYSExplorationTask.h"
+#include "Tasks/YYSWantedTask.h"
+#include "Tasks/YYSCoinMonsterTask.h"
+#include "Tasks/YYSSignInTask.h"
+#include "Tasks/YYSNianBeastTask.h"
+#include "Tasks/YYSPetsTask.h"
+#include "Tasks/YYSGuildTask.h"
+#include "Tasks/YYSAreaBossTask.h"
+#include "Tasks/YYSSecretDungeonTask.h"
+#include "Tasks/YYSTrueSnakeTask.h"
+#include "Tasks/YYSSoulTask.h"
+#include "Tasks/YYSAwakeningTask.h"
 #include <algorithm>
 
 namespace asst::yys {
@@ -22,6 +34,11 @@ void YYSDailyManager::register_daily(std::unique_ptr<IYYSDaily> daily)
 
 bool YYSDailyManager::run_all()
 {
+    std::sort(m_dailies.begin(), m_dailies.end(),
+        [](const auto& a, const auto& b) {
+            return a->priority() > b->priority();
+        });
+
     for (auto& daily : m_dailies) {
         if (daily && daily->check_enable()) {
             daily->run();
@@ -42,8 +59,19 @@ bool YYSDailyManager::run_by_priority(int min_priority)
 
 void YYSDailyManager::register_default_tasks()
 {
-    // 注册默认的御魂任务
+    register_daily(std::make_unique<YYSSignInTask>());
+    register_daily(std::make_unique<YYSCoinMonsterTask>());
+    register_daily(std::make_unique<YYSWantedTask>());
     register_daily(std::make_unique<YYSOrochiTask>());
+    register_daily(std::make_unique<YYSExplorationTask>());
+    register_daily(std::make_unique<YYSAreaBossTask>());
+    register_daily(std::make_unique<YYSTrueSnakeTask>());
+    register_daily(std::make_unique<YYSSoulTask>());
+    register_daily(std::make_unique<YYSAwakeningTask>());
+    register_daily(std::make_unique<YYSNianBeastTask>());
+    register_daily(std::make_unique<YYSSecretDungeonTask>());
+    register_daily(std::make_unique<YYSPetsTask>());
+    register_daily(std::make_unique<YYSGuildTask>());
 }
 
 } // namespace asst::yys

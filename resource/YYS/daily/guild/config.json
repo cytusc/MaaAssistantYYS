@@ -1,0 +1,30 @@
+{
+    "task_id": "guild",
+    "task_name": "阴阳寮",
+    "priority": 25,
+    "enabled": true,
+    "template": [
+        {
+            "id": "I_GUILD_ENTER",
+            "file": "I_GUILD_ENTER.png",
+            "roi": [0, 0, 1280, 720],
+            "threshold": 0.8,
+            "desc": "入口"
+        },
+        {
+            "id": "I_GUILD_BATTLE",
+            "file": "I_GUILD_BATTLE.png",
+            "roi": [800, 500, 400, 200],
+            "threshold": 0.8,
+            "desc": "挑战按钮"
+        },
+        {
+            "id": "I_GUILD_REWARD",
+            "file": "I_GUILD_REWARD.png",
+            "roi": [300, 200, 700, 400],
+            "threshold": 0.8,
+            "desc": "奖励弹窗"
+        }
+    ],
+    "ocr": []
+}
