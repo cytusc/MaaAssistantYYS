@@ -1,0 +1,16 @@
+{
+    "activity_id": "tower_sample",
+    "activity_name": "爬塔活动(样板)",
+    "enabled": true,
+    "template": [
+        {"id": "I_TOWER_ENTER", "file": "I_TOWER_ENTER.png", "roi": [0, 0, 1280, 720], "threshold": 0.8, "desc": "爬塔入口"},
+        {"id": "I_TOWER_CHALLENGE", "file": "I_TOWER_CHALLENGE.png", "roi": [800, 500, 400, 200], "threshold": 0.8, "desc": "挑战按钮"},
+        {"id": "I_TOWER_REWARD", "file": "I_TOWER_REWARD.png", "roi": [300, 200, 700, 400], "threshold": 0.8, "desc": "奖励弹窗"}
+    ],
+    "steps": [
+        {"name": "进入爬塔", "action": "wait_click", "target": "I_TOWER_ENTER", "timeout": 10000},
+        {"name": "点击挑战", "action": "wait_click", "target": "I_TOWER_CHALLENGE", "timeout": 5000},
+        {"name": "等待奖励", "action": "wait_click", "target": "I_TOWER_REWARD", "timeout": 120000}
+    ],
+    "ocr": []
+}
