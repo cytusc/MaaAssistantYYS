@@ -1,0 +1,27 @@
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+
+类型说明:
+  feat     - 新功能
+  fix      - 修复bug
+  docs     - 文档更新
+  style    - 代码格式(不影响代码运行的变动)
+  refactor - 重构(既不新增功能也不修改bug的代码变动)
+  perf     - 性能优化
+  test     - 测试相关
+  chore    - 构建/工具/配置等辅助工具的变动
+  ci       - CI/CD 配置变动
+
+示例:
+  feat(Orochi): 新增大蛇副本自动挑战功能
+  
+  实现了大蛇副本的完整自动化流程，包括：
+  - 自动进入副本
+  - 智能选择层数
+  - 战斗过程自动化
+  - 奖励自动领取
+  
+  Closes #123
