@@ -1,9 +1,9 @@
 # 待办事项
 
 <!--
-文档版本: 2.1
+文档版本: 2.2
 最后更新: 2026-05-09
-更新内容: Sprint 1 完成，更新待办状态
+更新内容: Sprint 2 完成 - YYSConfig 实现，YYSLogger 统一日志，MaaCoreBridge 桥接接口
 负责人: AI Assistant
 -->
 
@@ -16,6 +16,14 @@
 - [x] 实现 `MaaTemplateResolver::clear_image()` 清除截图
 - [x] 构建截图模板匹配验证工具（`TemplateMatchVerify`）
 - [x] 验证：降级模式构建和 dry-run 通过
+
+## Sprint 2：MaaCore 桥接与代码质量 ✅ 已完成
+
+- [x] 实现 `YYSConfig` 类定义（消除幽灵类，支持 JSON 配置加载、任务启停、优先级设置）
+- [x] 创建 `YYSLogger` 统一日志系统（带时间戳、文件名、行号、函数名）
+- [x] 替换所有业务代码中的 `printf` 日志为 `YYS_LOG_*` 宏
+- [x] 设计 `MaaCoreBridge` 桥接接口（`NullMaaCoreBridge` 空实现）
+- [x] 验证：构建和 dry-run 通过
 
 ## Sprint 2：MaaCore 桥接与真实设备联调
 

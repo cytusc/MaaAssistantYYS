@@ -1,9 +1,9 @@
 # MaaAssistantYYS 文档索引
 
 <!--
-文档版本: 2.1
+文档版本: 2.2
 最后更新: 2026-05-09
-更新内容: Sprint 1 完成 - OpenCV 条件编译集成，MaaTemplateResolver 真实匹配实现
+更新内容: Sprint 2 完成 - YYSConfig 实现，YYSLogger 统一日志，MaaCoreBridge 桥接接口
 负责人: AI Assistant
 -->
 
