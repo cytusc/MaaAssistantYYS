@@ -1,9 +1,9 @@
 # MaaAssistantYYS 文档索引
 
 <!--
-文档版本: 2.2
+文档版本: 2.3
 最后更新: 2026-05-09
-更新内容: Sprint 2 完成 - YYSConfig 实现，YYSLogger 统一日志，MaaCoreBridge 桥接接口
+更新内容: Sprint 3 完成 - Flow 体系重构，Orochi 组件使用 Flow，YYSContext 配置驱动初始化
 负责人: AI Assistant
 -->
 
@@ -46,12 +46,14 @@
 
 ### 已知问题
 
-1. **YYSConfig 幽灵类**：`YYSContext` 中前向声明了 `YYSConfig` 并提供 `config()`/`set_config()` 方法，但项目中 **不存在 YYSConfig 的定义**，调用 `ctx->config()` 将导致编译/链接错误。
-2. **Flow 体系未使用**：业务代码（Orochi 系列）直接操作 resolver/executor，未复用 Flow 组件。
-3. **日志系统不统一**：使用 `printf` 宏（`LOG_INFO` 等），未接入 MaaUtils Logger。
-4. **Tools 未全部构建**：`ResourceVerifier.cpp` 和 `YYSResourceProbe.cpp` 存在但未加入 CMakeLists.txt。
-5. **模板 PNG 缺失**：exploration 和 wanted 任务的 config.json 已定义模板 ID，但对应 PNG 文件不存在。
-6. **Flow 子 CMakeLists.txt 未引用**：`Common/Flow/CMakeLists.txt` 定义了 `YYSFlow` 目标但未被主 CMakeLists.txt 引用，且存在循环依赖隐患。
+1. ~~YYSConfig 幽灵类~~ → ✅ Sprint 2 已解决。
+2. ~~Flow 体系未使用~~ → ✅ Sprint 3 已解决。Orochi 组件已重构使用 `YYSWaitFlow`/`YYSActionFlow`/`YYSRetryFlow`。
+3. ~~日志系统不统一~~ → ✅ Sprint 2 已解决。
+4. Tools 未全部构建：`ResourceVerifier.cpp` 和 `YYSResourceProbe.cpp` 不在 CMakeLists.txt → Sprint 7 解决。
+5. ~~Flow 子 CMakeLists.txt 未引用且有循环依赖~~ → ✅ Sprint 3 已删除。
+6. 模板 PNG 缺失：exploration 和 wanted 的 config.json 有定义但无 PNG → Sprint 4/5 解决。
+7. MaaCore 桥接接口已设计（`MaaCoreBridge` + `NullMaaCoreBridge`），真实实现待 MaaCore 编译集成。
+8. OpenCV 运行时环境未安装：代码已就绪，需安装 OpenCV 后启用 `MAAYYS_USE_OPENCV` 验证。
 
 ## 文档维护原则
 

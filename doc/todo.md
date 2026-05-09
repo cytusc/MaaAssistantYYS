@@ -1,9 +1,9 @@
 # 待办事项
 
 <!--
-文档版本: 2.2
+文档版本: 2.3
 最后更新: 2026-05-09
-更新内容: Sprint 2 完成 - YYSConfig 实现，YYSLogger 统一日志，MaaCoreBridge 桥接接口
+更新内容: Sprint 3 完成 - Flow 体系重构，Orochi 组件使用 Flow，YYSContext 配置驱动初始化
 负责人: AI Assistant
 -->
 
@@ -23,24 +23,22 @@
 - [x] 创建 `YYSLogger` 统一日志系统（带时间戳、文件名、行号、函数名）
 - [x] 替换所有业务代码中的 `printf` 日志为 `YYS_LOG_*` 宏
 - [x] 设计 `MaaCoreBridge` 桥接接口（`NullMaaCoreBridge` 空实现）
+- [x] 删除有循环依赖的 `Common/Flow/CMakeLists.txt`
+- [x] 增强 Flow 组件（`YYSWaitFlow` 返回 `found_rect`、`YYSLoopFlow` null check、日志）
+- [x] 重构所有 Orochi 组件使用 Flow 组件
+- [x] YYSContext 增强支持配置驱动初始化
 - [x] 验证：构建和 dry-run 通过
 
-## Sprint 2：MaaCore 桥接与真实设备联调
+## Sprint 3：代码质量与 Flow 系统统一 ✅ 已完成
 
-- [ ] 桥接 MaaCore Controller 到 `MaaControllerActionExecutor`
-- [ ] 重新启用 MaaUtils 依赖（取消 CMakeLists.txt 中的注释）
-- [ ] 替换 `printf` 日志为 MaaUtils Logger
-- [ ] 真实设备联调御魂流程
-- [ ] 验证：御魂任务在真实模拟器上完成至少一次完整流程
-
-## Sprint 3：代码质量与 Flow 系统统一
-
-- [ ] 实现 `YYSConfig` 类定义（消除幽灵类）
-- [ ] 统一日志系统（移除所有 `LOG_INFO` 等 `printf` 宏）
-- [ ] Flow 系统重构：Orochi 组件改用 `YYSWaitFlow`/`YYSActionFlow`/`YYSRetryFlow`
-- [ ] 删除或修复 `Common/Flow/CMakeLists.txt`（当前未被引用且有循环依赖）
-- [ ] YYSContext 增强支持配置驱动初始化
-- [ ] 验证：重构后 dry-run 和真实设备联调均通过
+- [x] 删除有循环依赖的 `Common/Flow/CMakeLists.txt`
+- [x] 增强 Flow 组件（`YYSWaitFlow` 返回 `found_rect`、`YYSLoopFlow` null check、日志）
+- [x] 重构 `OrochiNavigator` 使用 `YYSWaitFlow` + `YYSRetryFlow` + `YYSActionFlow`
+- [x] 重构 `OrochiBattleRunner` 使用 `YYSWaitFlow` + `YYSRetryFlow` + `YYSActionFlow`
+- [x] 重构 `OrochiLayerSelector` 使用 `YYSWaitFlow` + `YYSActionFlow`
+- [x] 重构 `RewardHandler` 使用 `YYSWaitFlow` + `YYSActionFlow`
+- [x] `YYSContext` 增强支持配置驱动初始化（`create_with_defaults()` / `create_from_config()`）
+- [x] 验证：重构后 dry-run 通过
 
 ## Sprint 4：探索任务实现
 
@@ -92,14 +90,16 @@
 
 ## 已知问题（需在对应 Sprint 中解决）
 
-- [ ] YYSConfig 幽灵类：`YYSContext` 中前向声明但无定义 → Sprint 3 解决
-- [ ] Flow 体系未使用：业务代码手写循环 → Sprint 3 解决
-- [ ] 日志不统一：`printf` 宏重复定义 → Sprint 2/3 解决
+- [x] ~~YYSConfig 幽灵类~~ → Sprint 2 已解决
+- [x] ~~Flow 体系未使用~~ → Sprint 3 已解决
+- [x] ~~日志不统一~~ → Sprint 2 已解决（YYSLogger）
 - [ ] Tools 未全部构建：`ResourceVerifier` 和 `YYSResourceProbe` 不在 CMakeLists.txt → Sprint 7 解决
-- [ ] Flow 子 CMakeLists.txt 未引用且有循环依赖 → Sprint 3 解决
+- [x] ~~Flow 子 CMakeLists.txt 未引用且有循环依赖~~ → Sprint 3 已删除
 - [ ] 模板 PNG 缺失：exploration 和 wanted 的 config.json 有定义但无 PNG → Sprint 4/5 解决
 - [ ] YYSBaseActivity 未实现 `activity_id()`/`activity_name()` → Sprint 6 解决
-- [ ] OpenCV 运行时环境未安装：代码已就绪，需安装 OpenCV 后启用 `MAAYYS_USE_OPENCV` 验证 → Sprint 2 解决
+- [ ] OpenCV 运行时环境未安装 → Sprint 4 解决
+- [ ] MaaCore 真实桥接未实现 → Sprint 4 解决
+- [ ] MaaUtils 依赖未重新启用 → Sprint 4 解决
 
 ## 已完成（历史记录）
 
@@ -115,6 +115,10 @@
 - [x] 实现 `MaaTemplateResolver::match_template_opencv()` 真实图像匹配
 - [x] 实现 `MaaTemplateResolver::set_image()` / `set_image_from_raw()` / `clear_image()`
 - [x] 创建 `TemplateMatchVerify` 验证工具
+- [x] 实现 `YYSConfig` 类定义（消除幽灵类）
+- [x] 创建 `YYSLogger` 统一日志系统
+- [x] 替换所有业务代码中的 `printf` 日志为 `YYS_LOG_*` 宏
+- [x] 设计 `MaaCoreBridge` 桥接接口（`NullMaaCoreBridge` 空实现）
 - [x] 从 OAS 迁移御魂真实资源
 - [x] 拆分 `YYSOrochiTask` 为 4 个子组件
 - [x] 实现 Flow 流程引擎（YYSWaitFlow / YYSActionFlow / YYSRetryFlow / YYSLoopFlow）

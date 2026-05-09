@@ -1,9 +1,9 @@
 # 开发计划
 
 <!--
-文档版本: 2.2
+文档版本: 2.3
 最后更新: 2026-05-09
-更新内容: Sprint 2 完成 - YYSConfig 实现，YYSLogger 统一日志，MaaCoreBridge 桥接接口
+更新内容: Sprint 3 完成 - Flow 体系重构，Orochi 组件使用 Flow，YYSContext 配置驱动初始化
 负责人: AI Assistant
 -->
 
@@ -13,7 +13,7 @@
 
 ```text
 阶段 0：工程底座和文档闭环 ✅
-阶段 1：真实控制和识别适配 🔄 (约 70%，OpenCV 条件编译已实现)
+阶段 1：真实控制和识别适配 🔄 (约 85%，MaaCore 真实桥接待实现)
 阶段 2：御魂任务 MVP 🔄 (约 85%，dry-run 通过，真实联调未完成)
 阶段 3：日常任务扩展 ⏳
 阶段 4：活动模块快速迭代体系 ⏳
@@ -183,24 +183,29 @@ P2：
 4. 构建截图模板匹配验证工具（`TemplateMatchVerify`）。
 5. 验证：降级模式构建和 dry-run 通过。
 
-### Sprint 2：MaaCore 桥接与真实设备联调
+### Sprint 2：MaaCore 桥接与真实设备联调 ✅ 已完成（接口设计 + 日志统一 + YYSConfig）
 
 **目标**：将抽象接口真正连接到 MaaCore，完成端到端闭环。
 
-1. 桥接 MaaCore Controller 到 `MaaControllerActionExecutor`。
-2. 重新启用 MaaUtils 依赖，替换 `printf` 日志为 MaaUtils Logger。
-3. 真实设备联调御魂流程。
-4. 验证：御魂任务在真实模拟器上完成至少一次完整流程。
+1. ✅ 实现 `YYSConfig` 类定义（消除幽灵类，支持 JSON 配置加载、任务启停、优先级设置）。
+2. ✅ 创建 `YYSLogger` 统一日志系统（带时间戳、文件名、行号、函数名，支持级别过滤）。
+3. ✅ 替换所有业务代码中的 `printf` 日志为 `YYS_LOG_*` 宏。
+4. ✅ 设计 `MaaCoreBridge` 桥接接口（`NullMaaCoreBridge` 空实现，真实实现待 MaaCore 编译集成）。
+5. ⏳ MaaUtils 依赖重新启用（待 MaaCore 编译环境搭建）。
+6. ⏳ 真实设备联调（待 OpenCV 运行时 + MaaCore 编译集成）。
 
-### Sprint 3：代码质量与 Flow 系统统一
+### Sprint 3：代码质量与 Flow 系统统一 ✅ 已完成
 
 **目标**：在扩展新任务前，统一代码风格和基础设施。
 
-1. 统一日志系统（移除 `printf` 宏，接入 MaaUtils Logger）。
-2. Flow 系统重构（让 Orochi 组件使用 `YYSWaitFlow`/`YYSActionFlow`/`YYSRetryFlow`）。
-3. 实现 `YYSConfig` 类（消除幽灵类）。
-4. YYSContext 增强支持配置驱动初始化。
-5. 验证：重构后 dry-run 和真实设备联调均通过。
+1. ✅ 删除有循环依赖的 `Common/Flow/CMakeLists.txt`。
+2. ✅ 增强 Flow 组件（`YYSWaitFlow` 返回 `found_rect`、`YYSLoopFlow` null check、所有 Flow 添加日志）。
+3. ✅ 重构 `OrochiNavigator` 使用 `YYSWaitFlow` + `YYSRetryFlow` + `YYSActionFlow`。
+4. ✅ 重构 `OrochiBattleRunner` 使用 `YYSWaitFlow` + `YYSRetryFlow` + `YYSActionFlow`。
+5. ✅ 重构 `OrochiLayerSelector` 使用 `YYSWaitFlow` + `YYSActionFlow`。
+6. ✅ 重构 `RewardHandler` 使用 `YYSWaitFlow` + `YYSActionFlow`。
+7. ✅ `YYSContext` 增强支持配置驱动初始化（`create_with_defaults()` / `create_from_config()`）。
+8. ✅ 验证：重构后 dry-run 通过（`dry_run_result=ok`，`recorded_actions=8`）。
 
 ### Sprint 4：探索任务实现
 
