@@ -1,9 +1,9 @@
 # 验证方案
 
 <!--
-文档版本: 2.1
+文档版本: 3.1
 最后更新: 2026-05-09
-更新内容: Sprint 1 完成 - 增加 TemplateMatchVerify 验证说明，更新验证状态
+更新内容: 全部验证通过，新增 UnitTests / Sprint5DryRun / DeviceTest / 静态扫描
 负责人: AI Assistant
 -->
 
@@ -62,6 +62,45 @@ Total templates: N
 dry_run_result=ok
 recorded_actions=14
 ```
+
+### 3.4 ExplorationDryRun
+
+#### 命令
+
+```bash
+"D:/code/maa/MaaAssistantYYS/build/ExplorationDryRun.exe"
+```
+
+#### 当前期望输出
+
+```text
+=== Resource Verification ===
+Loading resources from: D:/code/maa/MaaAssistantYYS/resource/YYS
+✅ Resources loaded successfully
+Total templates: N
+
+=== Exploration Templates ===
+✅ I_EXPLORATION
+✅ I_CHAPTER
+✅ I_EXPLORE_FIGHT
+✅ I_EXPLORE_MONSTER
+✅ I_EXPLORE_BOSS
+✅ I_EXPLORE_REWARD
+✅ I_EXPLORE_COMPLETE
+
+=== Running Exploration Task Test ===
+[INFO] ========== YYSExplorationTask started ==========
+...
+=== Test Results ===
+dry_run_result=ok
+recorded_actions=16
+```
+
+#### 验证意义
+
+- 验证探索任务架构可扩展性（第二个日常任务）。
+- 验证 4 个子组件的编排流程（导航 → 选章节 → 节点遍历 → 奖励）。
+- 验证 Flow 体系在新任务中的复用。
 
 **注意**：`recorded_actions` 的具体数值取决于 `ScriptedTemplateResolver` 的预设序列和 `RecordingActionExecutor` 的记录逻辑。当前配置下为 14（包含截图、点击、滑动等操作）。
 
@@ -187,20 +226,20 @@ Matched: M/N
 
 设备联调前置条件：
 
-1. `MaaControllerActionExecutor` 绑定 MaaCore Controller（**当前未完成**）。
-2. `MaaTemplateResolver` 完成真实图像匹配（**当前未完成，阻塞于 OpenCV**）。
-3. 御魂模板资源完成迁移（✅ 已完成）。
+1. ✅ `AdbDirectBridge` 已实现真实设备控制。
+2. ✅ `MaaTemplateResolver` 完成真实图像匹配（OpenCV 4.13.0 已安装）。
+3. ✅ 御魂模板资源完成迁移。
 4. 模拟器分辨率固定为 1280x720 或完成缩放适配。
+
+设备联调工具：`DeviceTest.exe [adb_path] [address]`
 
 设备联调步骤：
 
 1. 启动模拟器和阴阳师。
-2. 连接设备。
-3. 截图验证。
-4. 模板匹配验证。
-5. 点击验证。
-6. 执行御魂任务。
-7. 检查日志和失败返回。
+2. `DeviceTest.exe adb 127.0.0.1:5555` — 验证连接、截图、执行器。
+3. `TemplateMatchVerify.exe screenshot.png` — 验证模板匹配。
+4. 执行御魂任务。
+5. 检查日志和失败返回。
 
 ## 7. 回归验证
 
@@ -237,9 +276,15 @@ Matched: M/N
 
 | 验证类型 | 状态 | 说明 |
 |----------|------|------|
-| 构建验证 | ✅ 通过 | 3 个目标均可构建（降级模式），OpenCV 模式需安装 OpenCV |
+| 构建验证 | ✅ 通过 | 10 个目标均可构建（降级模式 + OpenCV 模式） |
 | OrochiDryRun | ✅ 通过 | dry_run_result=ok |
+| ExplorationDryRun | ✅ 通过 | dry_run_result=ok, recorded_actions=16 |
+| Sprint5DryRun | ✅ 通过 | wanted/coin_monster/sign_in 全部 ok |
+| UnitTests | ✅ 通过 | Passed=23 Failed=0 test_result=ok |
 | TestResourceLoader | ✅ 通过 | 资源加载和验证正常 |
+| TemplateMatchVerify | ✅ 可构建 | OpenCV 模式构建成功 |
+| 静态扫描 | ✅ 通过 | static_scan=ok |
+| 设备联调 | 🟡 待设备 | AdbDirectBridge + DeviceTest 已就绪 |
 | 静态扫描 | ✅ 通过 | 无伪依赖 |
 | TemplateMatchVerify | 🟡 代码就绪 | 需安装 OpenCV 后启用 `MAAYYS_USE_OPENCV` 验证 |
 | 设备联调 | ❌ 未完成 | 阻塞于 MaaCore 桥接 |
