@@ -6,18 +6,7 @@
 #include "Base/ITemplateResolver.h"
 #include "Base/IActionExecutor.h"
 #include "Base/YYSTypes.h"
-
-#ifdef _WIN32
-#define LOG_INFO(fmt, ...) printf("[INFO] " fmt "\n", ##__VA_ARGS__)
-#define LOG_ERROR(fmt, ...) printf("[ERROR] " fmt "\n", ##__VA_ARGS__)
-#define LOG_DEBUG(fmt, ...) printf("[DEBUG] " fmt "\n", ##__VA_ARGS__)
-#define LOG_WARN(fmt, ...) printf("[WARN] " fmt "\n", ##__VA_ARGS__)
-#else
-#define LOG_INFO(fmt, ...) printf("[INFO] " fmt "\n", ##__VA_ARGS__)
-#define LOG_ERROR(fmt, ...) printf("[ERROR] " fmt "\n", ##__VA_ARGS__)
-#define LOG_DEBUG(fmt, ...) printf("[DEBUG] " fmt "\n", ##__VA_ARGS__)
-#define LOG_WARN(fmt, ...) printf("[WARN] " fmt "\n", ##__VA_ARGS__)
-#endif
+#include "Common/Logger/YYSLogger.h"
 
 namespace asst::yys {
 
@@ -29,43 +18,43 @@ OrochiBattleRunner::OrochiBattleRunner(std::shared_ptr<YYSContext> ctx)
 bool OrochiBattleRunner::start()
 {
     if (!m_ctx) {
-        LOG_ERROR("Context not available");
+        YYS_LOG_ERROR("Context not available");
         return false;
     }
 
-    LOG_INFO("Starting battle...");
+    YYS_LOG_INFO("Starting battle...");
 
     if (!click_start_button()) {
-        LOG_ERROR("Failed to start battle");
+        YYS_LOG_ERROR("Failed to start battle");
         return false;
     }
 
-    LOG_INFO("Battle started successfully");
+    YYS_LOG_INFO("Battle started successfully");
     return true;
 }
 
 bool OrochiBattleRunner::wait_for_end()
 {
     if (!m_ctx) {
-        LOG_ERROR("Context not available");
+        YYS_LOG_ERROR("Context not available");
         return false;
     }
 
-    LOG_INFO("Waiting for battle to end...");
+    YYS_LOG_INFO("Waiting for battle to end...");
 
     if (!wait_for_reward_screen()) {
-        LOG_ERROR("Battle reward screen not found (timeout)");
+        YYS_LOG_ERROR("Battle reward screen not found (timeout)");
         return false;
     }
 
-    LOG_INFO("Battle ended, reward screen detected");
+    YYS_LOG_INFO("Battle ended, reward screen detected");
     return true;
 }
 
 bool OrochiBattleRunner::click_start_button()
 {
     if (!m_ctx || !m_ctx->resolver() || !m_ctx->executor()) {
-        LOG_ERROR("Context, resolver or executor not available");
+        YYS_LOG_ERROR("Context, resolver or executor not available");
         return false;
     }
 
@@ -73,38 +62,38 @@ bool OrochiBattleRunner::click_start_button()
     constexpr int max_retry = 3;
 
     for (int i = 0; i < max_retry; ++i) {
-        LOG_DEBUG("Click attempt %d for target: %s", i + 1, target);
+        YYS_LOG_DEBUG("Click attempt %d for target: %s", i + 1, target);
 
         const auto rect = m_ctx->resolver()->find_template(target);
         if (!rect || rect->empty()) {
-            LOG_DEBUG("Template not found: %s", target);
+            YYS_LOG_DEBUG("Template not found: %s", target);
             std::this_thread::sleep_for(std::chrono::milliseconds(300));
             continue;
         }
 
         const int x = rect->x + rect->width / 2;
         const int y = rect->y + rect->height / 2;
-        LOG_DEBUG("Target %s found at (%d, %d), size: %dx%d", target, x, y, rect->width, rect->height);
+        YYS_LOG_DEBUG("Target %s found at (%d, %d), size: %dx%d", target, x, y, rect->width, rect->height);
 
         if (m_ctx->executor()->click(Point { x, y })) {
-            LOG_INFO("Clicked %s at (%d, %d)", target, x, y);
+            YYS_LOG_INFO("Clicked %s at (%d, %d)", target, x, y);
             std::this_thread::sleep_for(std::chrono::milliseconds(200));
             return true;
         }
 
-        LOG_WARN("Click failed for %s, attempt: %d", target, i + 1);
+        YYS_LOG_WARN("Click failed for %s, attempt: %d", target, i + 1);
         m_ctx->executor()->screencap();
         std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
 
-    LOG_ERROR("Failed to click %s after %d attempts", target, max_retry);
+    YYS_LOG_ERROR("Failed to click %s after %d attempts", target, max_retry);
     return false;
 }
 
 bool OrochiBattleRunner::wait_for_reward_screen()
 {
     if (!m_ctx || !m_ctx->resolver() || !m_ctx->executor()) {
-        LOG_ERROR("Context, resolver or executor not available");
+        YYS_LOG_ERROR("Context, resolver or executor not available");
         return false;
     }
 
@@ -112,19 +101,19 @@ bool OrochiBattleRunner::wait_for_reward_screen()
     constexpr int poll_interval = 500;
     const char* target = "I_REWARD";
 
-    LOG_DEBUG("Waiting for target: %s, timeout: %dms", target, BATTLE_TIMEOUT_MS);
+    YYS_LOG_DEBUG("Waiting for target: %s, timeout: %dms", target, BATTLE_TIMEOUT_MS);
 
     while (true) {
         const auto rect = m_ctx->resolver()->find_template(target);
         if (rect && !rect->empty()) {
-            LOG_DEBUG("Target %s found at (%d, %d)", target, rect->x, rect->y);
+            YYS_LOG_DEBUG("Target %s found at (%d, %d)", target, rect->x, rect->y);
             return true;
         }
 
         const auto elapsed = std::chrono::steady_clock::now() - start;
         const auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
         if (elapsed_ms >= BATTLE_TIMEOUT_MS) {
-            LOG_ERROR("Wait timeout for target: %s", target);
+            YYS_LOG_ERROR("Wait timeout for target: %s", target);
             return false;
         }
 

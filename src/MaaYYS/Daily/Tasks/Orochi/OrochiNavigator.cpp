@@ -6,18 +6,7 @@
 #include "Base/ITemplateResolver.h"
 #include "Base/IActionExecutor.h"
 #include "Base/YYSTypes.h"
-
-#ifdef _WIN32
-#define LOG_INFO(fmt, ...) printf("[INFO] " fmt "\n", ##__VA_ARGS__)
-#define LOG_WARN(fmt, ...) printf("[WARN] " fmt "\n", ##__VA_ARGS__)
-#define LOG_ERROR(fmt, ...) printf("[ERROR] " fmt "\n", ##__VA_ARGS__)
-#define LOG_DEBUG(fmt, ...) printf("[DEBUG] " fmt "\n", ##__VA_ARGS__)
-#else
-#define LOG_INFO(fmt, ...) printf("[INFO] " fmt "\n", ##__VA_ARGS__)
-#define LOG_WARN(fmt, ...) printf("[WARN] " fmt "\n", ##__VA_ARGS__)
-#define LOG_ERROR(fmt, ...) printf("[ERROR] " fmt "\n", ##__VA_ARGS__)
-#define LOG_DEBUG(fmt, ...) printf("[DEBUG] " fmt "\n", ##__VA_ARGS__)
-#endif
+#include "Common/Logger/YYSLogger.h"
 
 namespace asst::yys {
 
@@ -29,31 +18,31 @@ OrochiNavigator::OrochiNavigator(std::shared_ptr<YYSContext> ctx)
 bool OrochiNavigator::enter()
 {
     if (!m_ctx) {
-        LOG_ERROR("Context not available");
+        YYS_LOG_ERROR("Context not available");
         return false;
     }
 
-    LOG_INFO("Entering orochi interface...");
+    YYS_LOG_INFO("Entering orochi interface...");
 
     if (!wait_for_entrance()) {
-        LOG_ERROR("Orochi entrance not found");
+        YYS_LOG_ERROR("Orochi entrance not found");
         return false;
     }
 
     if (!click_entrance()) {
-        LOG_ERROR("Failed to click orochi entrance");
+        YYS_LOG_ERROR("Failed to click orochi entrance");
         return false;
     }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    LOG_INFO("Successfully entered orochi interface");
+    YYS_LOG_INFO("Successfully entered orochi interface");
     return true;
 }
 
 bool OrochiNavigator::wait_for_entrance()
 {
     if (!m_ctx || !m_ctx->resolver() || !m_ctx->executor()) {
-        LOG_ERROR("Context, resolver or executor not available");
+        YYS_LOG_ERROR("Context, resolver or executor not available");
         return false;
     }
 
@@ -61,19 +50,19 @@ bool OrochiNavigator::wait_for_entrance()
     constexpr int poll_interval = 500;
     const char* target = "I_OROCHI";
 
-    LOG_DEBUG("Waiting for target: %s, timeout: %dms", target, DEFAULT_TIMEOUT_MS);
+    YYS_LOG_DEBUG("Waiting for target: %s, timeout: %dms", target, DEFAULT_TIMEOUT_MS);
 
     while (true) {
         const auto rect = m_ctx->resolver()->find_template(target);
         if (rect && !rect->empty()) {
-            LOG_DEBUG("Target %s found at (%d, %d)", target, rect->x, rect->y);
+            YYS_LOG_DEBUG("Target %s found at (%d, %d)", target, rect->x, rect->y);
             return true;
         }
 
         const auto elapsed = std::chrono::steady_clock::now() - start;
         const auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
         if (elapsed_ms >= DEFAULT_TIMEOUT_MS) {
-            LOG_ERROR("Wait timeout for target: %s", target);
+            YYS_LOG_ERROR("Wait timeout for target: %s", target);
             return false;
         }
 
@@ -85,7 +74,7 @@ bool OrochiNavigator::wait_for_entrance()
 bool OrochiNavigator::click_entrance()
 {
     if (!m_ctx || !m_ctx->resolver() || !m_ctx->executor()) {
-        LOG_ERROR("Context, resolver or executor not available");
+        YYS_LOG_ERROR("Context, resolver or executor not available");
         return false;
     }
 
@@ -93,31 +82,31 @@ bool OrochiNavigator::click_entrance()
     constexpr int max_retry = 3;
 
     for (int i = 0; i < max_retry; ++i) {
-        LOG_DEBUG("Click attempt %d for target: %s", i + 1, target);
+        YYS_LOG_DEBUG("Click attempt %d for target: %s", i + 1, target);
 
         const auto rect = m_ctx->resolver()->find_template(target);
         if (!rect || rect->empty()) {
-            LOG_DEBUG("Template not found: %s", target);
+            YYS_LOG_DEBUG("Template not found: %s", target);
             std::this_thread::sleep_for(std::chrono::milliseconds(300));
             continue;
         }
 
         const int x = rect->x + rect->width / 2;
         const int y = rect->y + rect->height / 2;
-        LOG_DEBUG("Target %s found at (%d, %d), size: %dx%d", target, x, y, rect->width, rect->height);
+        YYS_LOG_DEBUG("Target %s found at (%d, %d), size: %dx%d", target, x, y, rect->width, rect->height);
 
         if (m_ctx->executor()->click(Point { x, y })) {
-            LOG_INFO("Clicked %s at (%d, %d)", target, x, y);
+            YYS_LOG_INFO("Clicked %s at (%d, %d)", target, x, y);
             std::this_thread::sleep_for(std::chrono::milliseconds(200));
             return true;
         }
 
-        LOG_WARN("Click failed for %s, attempt: %d", target, i + 1);
+        YYS_LOG_WARN("Click failed for %s, attempt: %d", target, i + 1);
         m_ctx->executor()->screencap();
         std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
 
-    LOG_ERROR("Failed to click %s after %d attempts", target, max_retry);
+    YYS_LOG_ERROR("Failed to click %s after %d attempts", target, max_retry);
     return false;
 }
 
