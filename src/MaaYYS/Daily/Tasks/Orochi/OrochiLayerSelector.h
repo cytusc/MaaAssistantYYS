@@ -7,16 +7,11 @@
 
 namespace asst::yys {
 
-// 前向声明
-enum class OrochiLayer;
-
 class OrochiLayerSelector {
 public:
     explicit OrochiLayerSelector(std::shared_ptr<YYSContext> ctx);
-    ~OrochiLayerSelector() = default;
 
-    // 选择层数
-    bool select(int layer_num);  // 改为接受 int 参数
+    bool select(int layer_num);
 
 private:
     bool find_layer_directly(int layer_num);

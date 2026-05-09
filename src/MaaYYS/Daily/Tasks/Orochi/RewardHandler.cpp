@@ -7,6 +7,9 @@
 #include "Base/IActionExecutor.h"
 #include "Base/YYSTypes.h"
 #include "Common/Logger/YYSLogger.h"
+#include "Common/Flow/YYSWaitFlow.h"
+#include "Common/Flow/YYSActionFlow.h"
+#include "Common/Flow/YYSLoopFlow.h"
 
 namespace asst::yys {
 
@@ -26,76 +29,25 @@ bool RewardHandler::handle()
 
     int attempts = 0;
     constexpr int max_attempts = 10;
+
     while (attempts < max_attempts) {
-        if (click_reward_button()) {
-            YYS_LOG_INFO("Clicked reward button, attempt: %d", attempts + 1);
-            ++attempts;
-            std::this_thread::sleep_for(std::chrono::milliseconds(300));
-            continue;
+        YYSWaitFlow wait_flow("I_REWARD", DEFAULT_TIMEOUT_MS);
+        wait_flow.init(m_ctx);
+        if (!wait_flow.run()) {
+            break;
         }
-        break;
+
+        YYSActionFlow click_flow(ActionType::Click, 0, 0, "I_REWARD");
+        click_flow.init(m_ctx);
+        click_flow.run();
+
+        ++attempts;
+        YYS_LOG_INFO("Clicked reward button, attempt: %d", attempts);
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
 
     YYS_LOG_INFO("Reward handling completed, attempts: %d", attempts);
     return true;
-}
-
-bool RewardHandler::click_reward_button()
-{
-    if (!m_ctx || !m_ctx->resolver() || !m_ctx->executor()) {
-        YYS_LOG_ERROR("Context, resolver or executor not available");
-        return false;
-    }
-
-    const char* target = "I_REWARD";
-
-    // 先等待目标出现
-    const auto start = std::chrono::steady_clock::now();
-    constexpr int poll_interval = 200;
-
-    while (true) {
-        const auto rect = m_ctx->resolver()->find_template(target);
-        if (rect && !rect->empty()) {
-            break; // 目标出现，准备点击
-        }
-
-        const auto elapsed = std::chrono::steady_clock::now() - start;
-        const auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
-        if (elapsed_ms >= DEFAULT_TIMEOUT_MS) {
-            return false; // 超时，目标未出现
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(poll_interval));
-        m_ctx->executor()->screencap();
-    }
-
-    // 点击目标
-    constexpr int max_retry = 2;
-    for (int i = 0; i < max_retry; ++i) {
-        YYS_LOG_DEBUG("Click attempt %d for target: %s", i + 1, target);
-
-        const auto rect = m_ctx->resolver()->find_template(target);
-        if (!rect || rect->empty()) {
-            YYS_LOG_DEBUG("Template not found: %s", target);
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            continue;
-        }
-
-        const int x = rect->x + rect->width / 2;
-        const int y = rect->y + rect->height / 2;
-
-        if (m_ctx->executor()->click(Point { x, y })) {
-            YYS_LOG_DEBUG("Clicked %s at (%d, %d)", target, x, y);
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            return true;
-        }
-
-        YYS_LOG_DEBUG("Click failed for %s, attempt: %d", target, i + 1);
-        m_ctx->executor()->screencap();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    return false;
 }
 
 } // namespace asst::yys
