@@ -1,0 +1,27 @@
+{
+    "version": "1.0.0",
+    "index": {
+        "base": {
+            "I_CONFIRM": "base/template/I_CONFIRM.png",
+            "I_CANCEL": "base/template/I_CANCEL.png",
+            "I_CLOSE": "base/template/I_CLOSE.png",
+            "I_BACK": "base/template/I_BACK.png",
+            "I_START": "base/template/I_START.png"
+        },
+        "daily": {
+            "orochi": {
+                "I_OROCHI": "daily/orochi/template/I_OROCHI.png",
+                "I_OROCHI_FIRE": "daily/orochi/template/I_OROCHI_FIRE.png",
+                "I_LAYER_LIST": "daily/orochi/template/I_LAYER_LIST.png"
+            },
+            "exploration": {},
+            "wanted": {}
+        },
+        "activity": {
+            "common": {
+                "I_ACTIVITY_ENTER": "activity/template/common/I_ACTIVITY_ENTER.png",
+                "I_CHALLENGE": "activity/template/common/I_CHALLENGE.png"
+            }
+        }
+    }
+}

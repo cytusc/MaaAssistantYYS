@@ -1,0 +1,73 @@
+{
+    "task_id": "orochi",
+    "task_name": "八岐大蛇",
+    "priority": 50,
+    "enabled": true,
+    "steps": [
+        {
+            "name": "进入御魂",
+            "action": "wait",
+            "target": "I_OROCHI",
+            "timeout": 5000
+        },
+        {
+            "name": "点击挑战",
+            "action": "click",
+            "target": "I_OROCHI_FIRE"
+        },
+        {
+            "name": "选择层数",
+            "action": "ocr_select",
+            "target": "O_LAYER",
+            "value": "捌"
+        },
+        {
+            "name": "开始战斗",
+            "action": "click",
+            "target": "I_START_BATTLE"
+        },
+        {
+            "name": "等待结算",
+            "action": "wait",
+            "target": "I_REWARD",
+            "timeout": 30000
+        }
+    ],
+    "template": [
+        {
+            "id": "I_OROCHI",
+            "file": "I_OROCHI.png",
+            "roi": [55, 104, 295, 406],
+            "threshold": 0.8,
+            "description": "御魂入口图标"
+        },
+        {
+            "id": "I_OROCHI_FIRE",
+            "file": "I_OROCHI_FIRE.png",
+            "roi": [1095, 577, 131, 124],
+            "threshold": 0.6,
+            "description": "挑战/开启战斗按钮"
+        },
+        {
+            "id": "I_REWARD",
+            "file": "I_REWARD.png",
+            "roi": [500, 500, 120, 80],
+            "threshold": 0.7,
+            "description": "奖励弹窗确认按钮"
+        },
+        {
+            "id": "O_LAYER_8",
+            "file": "O_LAYER_8.png",
+            "roi": [138, 130, 45, 88],
+            "threshold": 0.8,
+            "description": "第8层选择器"
+        }
+    ],
+    "ocr": [
+        {
+            "id": "O_LAYER",
+            "roi": [138, 130, 359, 500],
+            "mode": "digit"
+        }
+    ]
+}

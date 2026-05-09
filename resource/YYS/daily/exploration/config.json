@@ -1,0 +1,40 @@
+{
+    "task_id": "exploration",
+    "task_name": "探索副本",
+    "priority": 40,
+    "enabled": true,
+    "steps": [
+        {
+            "name": "进入探索",
+            "action": "wait",
+            "target": "I_EXPLORATION",
+            "timeout": 5000
+        },
+        {
+            "name": "点击章节",
+            "action": "click",
+            "target": "I_CHAPTER"
+        },
+        {
+            "name": "等待战斗",
+            "action": "wait",
+            "target": "I_BATTLE",
+            "timeout": 10000
+        }
+    ],
+    "template": [
+        {
+            "id": "I_EXPLORATION",
+            "file": "I_EXPLORATION.png",
+            "roi": [0, 0, 1280, 720],
+            "threshold": 0.8
+        },
+        {
+            "id": "I_CHAPTER",
+            "file": "I_CHAPTER.png",
+            "roi": [0, 0, 1280, 720],
+            "threshold": 0.7
+        }
+    ],
+    "ocr": []
+}

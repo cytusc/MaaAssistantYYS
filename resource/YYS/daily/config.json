@@ -1,0 +1,10 @@
+{
+    "version": "1.0.0",
+    "tasks": [
+        {"id": "orochi", "enabled": true},
+        {"id": "exploration", "enabled": true},
+        {"id": "wanted", "enabled": true},
+        {"id": "gold_youkai", "enabled": true},
+        {"id": "pets", "enabled": true}
+    ]
+}

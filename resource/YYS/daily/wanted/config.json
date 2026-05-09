@@ -1,0 +1,39 @@
+{
+    "task_id": "wanted",
+    "task_name": "悬赏封印",
+    "priority": 60,
+    "enabled": true,
+    "steps": [
+        {
+            "name": "打开任务",
+            "action": "click",
+            "target": "I_WANTED"
+        },
+        {
+            "name": "识别任务",
+            "action": "ocr",
+            "target": "O_TASK",
+            "mode": "full"
+        },
+        {
+            "name": "点击任务",
+            "action": "click",
+            "target": "I_TASK_TARGET"
+        }
+    ],
+    "template": [
+        {
+            "id": "I_WANTED",
+            "file": "I_WANTED.png",
+            "roi": [0, 0, 1280, 720],
+            "threshold": 0.8
+        }
+    ],
+    "ocr": [
+        {
+            "id": "O_TASK",
+            "roi": [0, 0, 1280, 720],
+            "mode": "full"
+        }
+    ]
+}

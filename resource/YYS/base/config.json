@@ -1,0 +1,15 @@
+{
+    "version": "1.0.0",
+    "game": {
+        "name": "阴阳师",
+        "package": {
+            "official": "com.netease.onmyoji",
+            "bili": "com.netease.onmyoji.bili"
+        }
+    },
+    "screen": {
+        "default_width": 1280,
+        "default_height": 720,
+        "orientation": 0
+    }
+}

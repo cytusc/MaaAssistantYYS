@@ -1,0 +1,7 @@
+{
+    "version": "1.0.0",
+    "activities": [
+        {"id": "tower", "enabled": false},
+        {"id": "demon", "enabled": false}
+    ]
+}
