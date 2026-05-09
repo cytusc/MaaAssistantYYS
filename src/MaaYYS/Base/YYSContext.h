@@ -2,11 +2,12 @@
 
 #include <memory>
 
+#include "Base/YYSConfig.h"
+
 namespace asst::yys {
 
 class IActionExecutor;
 class ITemplateResolver;
-class YYSConfig;
 
 class YYSContext {
 public:
