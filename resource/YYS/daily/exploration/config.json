@@ -3,37 +3,55 @@
     "task_name": "探索副本",
     "priority": 40,
     "enabled": true,
-    "steps": [
-        {
-            "name": "进入探索",
-            "action": "wait",
-            "target": "I_EXPLORATION",
-            "timeout": 5000
-        },
-        {
-            "name": "点击章节",
-            "action": "click",
-            "target": "I_CHAPTER"
-        },
-        {
-            "name": "等待战斗",
-            "action": "wait",
-            "target": "I_BATTLE",
-            "timeout": 10000
-        }
-    ],
     "template": [
         {
             "id": "I_EXPLORATION",
             "file": "I_EXPLORATION.png",
-            "roi": [0, 0, 1280, 720],
-            "threshold": 0.8
+            "roi": [0, 100, 400, 500],
+            "threshold": 0.8,
+            "desc": "探索入口"
         },
         {
             "id": "I_CHAPTER",
             "file": "I_CHAPTER.png",
-            "roi": [0, 0, 1280, 720],
-            "threshold": 0.7
+            "roi": [200, 100, 800, 550],
+            "threshold": 0.7,
+            "desc": "章节选择项"
+        },
+        {
+            "id": "I_EXPLORE_FIGHT",
+            "file": "I_EXPLORE_FIGHT.png",
+            "roi": [900, 500, 350, 200],
+            "threshold": 0.8,
+            "desc": "挑战按钮"
+        },
+        {
+            "id": "I_EXPLORE_MONSTER",
+            "file": "I_EXPLORE_MONSTER.png",
+            "roi": [0, 0, 1280, 600],
+            "threshold": 0.7,
+            "desc": "地图怪物节点"
+        },
+        {
+            "id": "I_EXPLORE_BOSS",
+            "file": "I_EXPLORE_BOSS.png",
+            "roi": [0, 0, 1280, 600],
+            "threshold": 0.7,
+            "desc": "BOSS节点"
+        },
+        {
+            "id": "I_EXPLORE_REWARD",
+            "file": "I_EXPLORE_REWARD.png",
+            "roi": [300, 200, 700, 400],
+            "threshold": 0.8,
+            "desc": "章节结算奖励"
+        },
+        {
+            "id": "I_EXPLORE_COMPLETE",
+            "file": "I_EXPLORE_COMPLETE.png",
+            "roi": [300, 100, 700, 500],
+            "threshold": 0.8,
+            "desc": "探索完成"
         }
     ],
     "ocr": []
