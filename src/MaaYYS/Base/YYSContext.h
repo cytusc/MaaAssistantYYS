@@ -13,6 +13,9 @@ class YYSContext {
 public:
     YYSContext();
 
+    static std::shared_ptr<YYSContext> create_with_defaults();
+    static std::shared_ptr<YYSContext> create_from_config(const std::filesystem::path& config_path);
+
     std::shared_ptr<IActionExecutor> executor() const { return m_executor; }
     std::shared_ptr<ITemplateResolver> resolver() const { return m_resolver; }
     std::shared_ptr<YYSConfig> config() const { return m_config; }
