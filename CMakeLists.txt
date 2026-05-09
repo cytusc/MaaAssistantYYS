@@ -20,8 +20,10 @@ file(GLOB_RECURSE MAAYYS_SRC CONFIGURE_DEPENDS
     "src/MaaYYS/Daily/Tasks/Orochi/*.cpp"
     "src/MaaYYS/Common/Controller/*.cpp"
     "src/MaaYYS/Common/Flow/*.cpp"
+    "src/MaaYYS/Common/Logger/*.cpp"
     "src/MaaYYS/Common/Resource/*.cpp"
     "src/MaaYYS/Common/Vision/*.cpp"
+    "src/MaaYYS/Common/Bridge/*.cpp"
 )
 
 add_library(MaaYYS STATIC ${MAAYYS_SRC})
