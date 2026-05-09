@@ -18,6 +18,8 @@ file(GLOB_RECURSE MAAYYS_SRC CONFIGURE_DEPENDS
     "src/MaaYYS/Daily/*.cpp"
     "src/MaaYYS/Daily/Tasks/*.cpp"
     "src/MaaYYS/Daily/Tasks/Orochi/*.cpp"
+    "src/MaaYYS/Daily/Tasks/Exploration/*.cpp"
+    "src/MaaYYS/Daily/Tasks/Wanted/*.cpp"
     "src/MaaYYS/Common/Controller/*.cpp"
     "src/MaaYYS/Common/Flow/*.cpp"
     "src/MaaYYS/Common/Logger/*.cpp"
@@ -51,6 +53,24 @@ target_link_libraries(OrochiDryRun PRIVATE MaaYYS)
 
 add_executable(TestResourceLoader src/MaaYYS/Tools/TestResourceLoader.cpp)
 target_link_libraries(TestResourceLoader PRIVATE MaaYYS)
+
+add_executable(ExplorationDryRun src/MaaYYS/Tools/ExplorationDryRun.cpp)
+target_link_libraries(ExplorationDryRun PRIVATE MaaYYS)
+
+add_executable(Sprint5DryRun src/MaaYYS/Tools/Sprint5DryRun.cpp)
+target_link_libraries(Sprint5DryRun PRIVATE MaaYYS)
+
+add_executable(ResourceVerifier src/MaaYYS/Tools/ResourceVerifier.cpp)
+target_link_libraries(ResourceVerifier PRIVATE MaaYYS)
+
+add_executable(YYSResourceProbe src/MaaYYS/Tools/YYSResourceProbe.cpp)
+target_link_libraries(YYSResourceProbe PRIVATE MaaYYS)
+
+add_executable(UnitTests test/UnitTests.cpp)
+target_link_libraries(UnitTests PRIVATE MaaYYS)
+
+add_executable(DeviceTest src/MaaYYS/Tools/DeviceTest.cpp)
+target_link_libraries(DeviceTest PRIVATE MaaYYS)
 
 if(MAAYYS_USE_OPENCV)
     add_executable(TemplateMatchVerify src/MaaYYS/Tools/TemplateMatchVerify.cpp)
